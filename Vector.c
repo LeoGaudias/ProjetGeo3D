@@ -1,6 +1,6 @@
 #include "Vector.h"
 
-const float epsilon = 0.0000000001;
+const float epsilon = 0.00001;
 
 Vector V_new(float x, float y, float z)
 {
@@ -33,9 +33,15 @@ Vector V_multiply(double lambda, Vector v)
 
 Vector V_cross(Vector v1, Vector v2)
 {
-	return V_new((v1.y * v2.z) - (v1.z * v2.y),
-	 (v1.z * v2.x) - (v1.x * v2.z),
-	 (v1.x * v2.y) - (v1.y * v2.x));
+	// return V_new((v1.y * v2.z) - (v1.z * v2.y),
+	//  (v1.z * v2.x) - (v1.x * v2.z),
+	//  (v1.x * v2.y) - (v1.y * v2.x));
+
+	Vector v=V_new(0.,0.,0.);
+	v.x = v1.y*v2.z - v1.z*v2.y;
+	v.y = v1.x*v2.z - v1.z*v2.x;
+	v.z = v1.x*v2.y - v1.y*v2.x;
+	return v;
 }
 
 float  V_dot(Vector v1, Vector v2)
@@ -98,7 +104,8 @@ int V_isOnTheRight(Vector M, Vector A, Vector B)
 
 int V_segmentsIntersect(Vector p1, Vector p2, Vector q1, Vector q2)
 {
-
+	//TODO
+	return 0;
 }
 
 int V_rayIntersectsSegment(Vector M, Vector u_ray, Vector p1, Vector p2)
@@ -130,26 +137,31 @@ int V_rayIntersectsSegment(Vector M, Vector u_ray, Vector p1, Vector p2)
 Vector V_turnAroundY(Vector p, double angle)
 {
 	//TODO
+	return V_new(0,0,0);
 }
 
 Vector V_turnAroundZ(Vector p, double angle)
 {
 	//TODO
+	return V_new(0,0,0);
 }
 
 Vector V_projectOnPlane(Vector v, Vector normal)
 {
 	//TODO
+	return V_new(0,0,0);
 }
 
 double V_decompose(Vector p, Vector u)
 {
 	//TODO
+	return 0.0;
 }
 
 Vector V_recompose(double x, double y, double z, Vector u, Vector v, Vector w)
 {
 	//TODO
+	return V_new(0,0,0);
 }
 
 void V_uxUyFromUz(Vector u_z, Vector *u_x, Vector *u_y)
@@ -160,4 +172,5 @@ void V_uxUyFromUz(Vector u_z, Vector *u_x, Vector *u_y)
 Vector V_rotate(Vector p, Vector centre, Vector v1, Vector v2)
 {
 	//TODO
+	return V_new(0,0,0);
 }

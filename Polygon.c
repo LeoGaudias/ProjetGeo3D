@@ -12,14 +12,14 @@ void P_init(Polygon *p)
 
 void P_copy(Polygon *original, Polygon *copy)
 {
-	copie->_nb_vertices = original->_nb_vertices;
-	copie->_is_closed = original->_is_closed;
-	copie->_is_filled = original->_is_filled;
-	copie->_is_convex = original->_is_convex;
+	copy->_nb_vertices = original->_nb_vertices;
+	copy->_is_closed = original->_is_closed;
+	copy->_is_filled = original->_is_filled;
+	copy->_is_convex = original->_is_convex;
 	int i;
 	for(i = 0; i < P_MAX_VERTICES; ++i)
 	{
-	copie->_vertices[i] = original->_vertices[i];
+	copy->_vertices[i] = original->_vertices[i];
 	}
 }
 
@@ -27,7 +27,7 @@ void P_addVertex(Polygon *P, Vector p)
 {
 	if(P->_nb_vertices < P_MAX_VERTICES)
 	{
-		P->_vertices[P->_nb_vertices] = pos;
+		P->_vertices[P->_nb_vertices] = p;
 		P->_nb_vertices++;
 	}
 	else
@@ -70,39 +70,48 @@ void P_draw(Polygon *P, int width, int height)
 	glEnd();
 }
 
-//------------------------------------------------------------
-
-// void drawline(Polygon *P)
-// {
-// 	int i;
-// 	glBegin(GL_LINE_STRIP);
-// 	for(i = 0; i < P->_nb_vertices; ++i)
-// 	{
-// 		glVertex3f(P->_vertices[i].x,P->_vertices[i].y,P->_vertices[i].z);
-// 	}
-// 	glEnd();
-// }
-
-//------------------------------------------------------------
-
 int P_isConvex(Polygon *P)
 {
-	//TODO
+	if(P->_nb_vertices > 2)
+	{
+		int i, test = 0;
+		for (i = 0; i < P->_nb_vertices - 2; ++i)
+		{
+			test += V_isOnTheRight(P->_vertices[i+2],P->_vertices[i],P->_vertices[i+1]);
+		}
+		printf("test = %d\n",test);
+		if(test == P->_nb_vertices-2)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	else
+	{
+		fprintf(stderr,"Pas assez de Vector pour le réaliser le test\n");
+		return -1;	
+	}
 }
 
 int P_isOnTheLeftOfAllEdges(Polygon *P, Vector M)
 {
 	//TODO
+	return 0;
 }
 
 int P_nbEdgesIntersectedByRay(Polygon *P, Vector M, Vector u_ray)
 {
 	//TODO
+	return 0;
 }
 
 int P_isInside(Polygon *P, Vector M)
 {
 	//TODO
+	return 0;
 }
 
 void P_turnAroundY(Polygon *P, double radians)
@@ -113,11 +122,13 @@ void P_turnAroundY(Polygon *P, double radians)
 Vector P_center(Polygon *P)
 {
 	//TODO
+	return V_new(0,0,0);
 }
 
 Vector P_normal(Polygon *P)
 {
 	//TODO
+	return V_new(0,0,0);
 }
 
 void P_scale(Polygon *P, double factor)

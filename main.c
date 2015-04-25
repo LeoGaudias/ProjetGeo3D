@@ -13,30 +13,70 @@
 
 #include "Vector.h"
 #include "Polygon.h"
-#include "QuadMesh.h"
+//#include "QuadMesh.h" ??
+#include "Mesh.h"
 
 #define DIM2 0
 #define DIM3 1
-int dim=DIM2;
+
+int dim = DIM2;
 
 /* dimensions de la fenetre */
 int width = 650;
 int height = 650;
 
+/*var globale*/
+Vector p_aim;
+Polygon P;
+//Mesh ou QuadMesh M
+
 GLfloat p_light[4];
 
 //------------------------------------------------------------
 
-void drawLine(Vector p1, Vector p2)
+// void drawLine(Vector p1, Vector p2)
+// {
+// 	glBegin(GL_LINES);
+// 	glVertex3d(p1.x,p1.y,p1.z);
+// 	glVertex3d(p2.x,p2.y,p2.z);
+// 	glEnd();
+// }
+
+void drawline(Polygon *P)
 {
-	glBegin(GL_LINES);
-	glVertex3d(p1.x,p1.y,p1.z);
-	glVertex3d(p2.x,p2.y,p2.z);
+	int i;
+	glBegin(GL_LINE_STRIP);
+	for(i = 0; i < P->_nb_vertices; ++i)
+	{
+		glVertex3f(P->_vertices[i].x,P->_vertices[i].y,P->_vertices[i].z);
+	}
 	glEnd();
 }
 
 //------------------------------------------------------------
 
+void drawRepere()
+{
+	glColor3d(300,0,0);
+	glBegin(GL_LINES);
+	glVertex3d(0,0,0);
+	glVertex3d(300,0,0);
+	glEnd();
+
+	glColor3d(0,300,0);
+	glBegin(GL_LINES);
+	glVertex3d(0,0,0);
+	glVertex3d(0,300,0);
+	glEnd();
+
+	glColor3d(0,0,300);
+	glBegin(GL_LINES);
+	glVertex3d(0,0,0);
+	glVertex3d(0,0,300);
+	glEnd();
+}
+
+//------------------------------------------------------------
 void initShade()
 {
 	GLfloat mat_diffuse[] = {1,1,1,1.0};
@@ -69,14 +109,41 @@ void display()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	if(dim==DIM2)	glOrtho(-1,1,-1,1,-1,1);
-	else			gluPerspective( 40, (float)width/height, 1, 100);
+	if(dim==DIM2)
+	{
+		glOrtho(-300,300,-300,300,-1,1);
+	}
+	else if(dim==DIM3)
+	{
+		glOrtho(-300,300,-300,300,-300,300);
+	}
+	else
+	{
+		gluPerspective( 40, (float)width/height, 1, 100);
+	}
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	// Dessiner ici
 	// ...
+
+	//chooseRandomColor();
+	if(P._is_filled)
+	{
+		if(P._nb_vertices < 3)
+		{
+			drawline(&P);
+		}
+		else
+		{
+			P_draw(&P,width,height);
+		}
+	}
+	else
+	{
+		drawline(&P);
+	}
 
 	// Repere du monde
 
@@ -93,6 +160,17 @@ void keyboard(unsigned char keycode, int x, int y)
 
 	if (keycode==27) // ECHAP
 		exit(0);
+	if (keycode=='c' || keycode=='C')
+	{
+		if(P._is_filled)
+		{
+			P._is_filled = 0;
+		}
+		else
+		{
+			P._is_filled = 1;
+		}
+	}
 
 	glutPostRedisplay();
 }
@@ -121,6 +199,37 @@ void special(int keycode, int x, int y)
 void mouse(int button, int state, int x, int y)
 {
 	printf("Clic at %d %d \n",x,y);
+
+	switch(button)
+    {
+	    case GLUT_LEFT_BUTTON :
+			if(state==GLUT_DOWN)
+			{
+				fprintf(stderr,"Clic gauche\n");
+				Vector pos = V_new(x - width/2,height/2 - y,0);
+				P_addVertex(&P, pos);
+				printf("P _nb_vertices -> %d\n",P._nb_vertices);
+				printf("P is -> %d\n",P_isConvex(&P));
+				//P_print(&P,"affichage des valeurs");
+			}
+		break;
+
+	    case GLUT_MIDDLE_BUTTON :
+			if(state==GLUT_DOWN)
+			{
+				fprintf(stderr,"Clic milieu\n");
+			}
+		break;
+
+	    case GLUT_RIGHT_BUTTON :
+			if(state==GLUT_DOWN)
+			{
+				fprintf(stderr,"Clic droit.\n");
+				P_removeLastVertex(&P);
+				//P_print(&P,"affichage des valeurs après ");
+			}
+		break;
+    }
 
 	glutPostRedisplay();
 }
@@ -161,8 +270,9 @@ int main(int argc, char *argv[])
 	p_light[3]=1.0;
 
 	p_aim = V_new(0,0,-2.75);
-	P = P_new();
-	M = NULL;
+	//P = P_new();
+	P_init(&P);
+	//M = NULL;
 
 	glutMainLoop();
 
