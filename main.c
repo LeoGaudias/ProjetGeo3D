@@ -221,10 +221,7 @@ void mouse(int button, int state, int x, int y)
 				{
 					fprintf(stderr,"Clic gauche\n");
 					//Vector pos = V_new(x - width/2,height/2 - y,0);
-<<<<<<< Updated upstream
-=======
-					
->>>>>>> Stashed changes
+
 					int i;
 
 					int inter = 0;

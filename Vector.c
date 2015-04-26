@@ -56,8 +56,8 @@ float  V_length(Vector v)
 
 Vector V_unit(Vector v)
 {
-	//TODO
-	return V_new(0,0,0);
+	int lon=V_length(v);
+	return V_new(v.x/lon,v.y/lon,v.z/lon);
 }
 
 int V_isOnTheRight(Vector M, Vector A, Vector B)
@@ -147,14 +147,12 @@ int V_rayIntersectsSegment(Vector M, Vector u_ray, Vector p1, Vector p2)
 
 Vector V_turnAroundY(Vector p, double angle)
 {
-	//TODO
-	return V_new(0,0,0);
+	return V_new(p.x*cos(angle)+p.z+sin(angle),p.y,-p.x*sin(angle)+p.z*cos(angle));
 }
 
 Vector V_turnAroundZ(Vector p, double angle)
 {
-	//TODO
-	return V_new(0,0,0);
+	return V_new(p.x*cos(angle)-p.y*sin(angle),p.x*sin(angle)+p.y*cos(angle),p.z);
 }
 
 Vector V_projectOnPlane(Vector v, Vector normal)

@@ -125,7 +125,11 @@ int P_isInside(Polygon *P, Vector M)
 
 void P_turnAroundY(Polygon *P, double radians)
 {
-	//TODO
+	int i=0;
+	for(i=0;i<P->_nb_vertices;i++)
+	{
+		V_turnAroundY(P->_vertices[i],radians);
+	}
 }
 
 Vector P_center(Polygon *P)
