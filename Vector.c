@@ -104,8 +104,19 @@ int V_isOnTheRight(Vector M, Vector A, Vector B)
 
 int V_segmentsIntersect(Vector p1, Vector p2, Vector q1, Vector q2)
 {
-	//TODO
-	return 0;
+	int res=0;
+	
+	if(V_isOnTheRight(q1,p1,p2)==0 && V_isOnTheRight(q2,p1,p2)==1)
+	{
+		res=1;
+	}
+	else if(V_isOnTheRight(q1,p1,p2)==1 && V_isOnTheRight(q2,p1,p2)==0)
+	{
+		res=1;
+	}
+	
+	
+	return res;
 }
 
 int V_rayIntersectsSegment(Vector M, Vector u_ray, Vector p1, Vector p2)
@@ -118,17 +129,17 @@ int V_rayIntersectsSegment(Vector M, Vector u_ray, Vector p1, Vector p2)
 
 	if(V_isOnTheRight(p1,M,M2) == 1 && V_isOnTheRight(p2,M,M2)==0)
 	{
-	if(scalA > epsilon && scalB > epsilon)
-	{
-	  res=1;
-	}
+		if(scalA > epsilon && scalB > epsilon)
+		{
+		  res=1;
+		}
 	}
 	else if(V_isOnTheRight(p1,M,M2)==0 && V_isOnTheRight(p2,M,M2)==1)
 	{
-	if(scalA > epsilon && scalB > epsilon)
-	{
-	  res=1;
-	}
+		if(scalA > epsilon && scalB > epsilon)
+		{
+		  res=1;
+		}
 	}
 
 	return res;
