@@ -29,6 +29,7 @@ int height = 650;
 Vector p_aim;
 Polygon P;
 //Mesh ou QuadMesh M
+int dessiner=1; // on peut dessiner
 
 GLfloat p_light[4];
 
@@ -215,30 +216,37 @@ void mouse(int button, int state, int x, int y)
 	    case GLUT_LEFT_BUTTON :
 			if(state==GLUT_DOWN)
 			{
-				fprintf(stderr,"Clic gauche\n");
-				//Vector pos = V_new(x - width/2,height/2 - y,0);
-				Vector pos=V_new((double)(x-width/2)/(double)(width/2),(double)(-y+height/2)/(double)(height/2),0);
-				int i;
-
-				int inter = 0;
-				for(i=0;i<P._nb_vertices-1;i++)
+				if(dessiner==1)
 				{
-					printf("intersect %d\n", V_segmentsIntersect(P._vertices[i], P._vertices[i+1],P._vertices[P._nb_vertices-1] , pos )+V_segmentsIntersect(P._vertices[i+1], P._vertices[i],P._vertices[P._nb_vertices-1] , pos ));
-					if(V_segmentsIntersect(P._vertices[i], P._vertices[i+1],P._vertices[P._nb_vertices-1] , pos)+V_segmentsIntersect(P._vertices[i+1], P._vertices[i],P._vertices[P._nb_vertices-1] , pos)>1)
+					fprintf(stderr,"Clic gauche\n");
+					//Vector pos = V_new(x - width/2,height/2 - y,0);
+					Vector pos=V_new((double)(x-width/2)/(double)(width/2),(double)(-y+height/2)/(double)(height/2),0);
+					int i;
+
+					int inter = 0;
+					for(i=0;i<P._nb_vertices-1;i++)
 					{
-						fprintf(stderr,"Erreur, segment qui se croisent !\n");
-						inter=1;
-						break;
+						printf("intersect %d\n", V_segmentsIntersect(P._vertices[i], P._vertices[i+1],P._vertices[P._nb_vertices-1] , pos )+V_segmentsIntersect(P._vertices[i+1], P._vertices[i],P._vertices[P._nb_vertices-1] , pos ));
+						if(V_segmentsIntersect(P._vertices[i], P._vertices[i+1],P._vertices[P._nb_vertices-1] , pos)+V_segmentsIntersect(P._vertices[i+1], P._vertices[i],P._vertices[P._nb_vertices-1] , pos)>1)
+						{
+							fprintf(stderr,"Erreur, segment qui se croisent !\n");
+							inter=1;
+							break;
+						}
+					}
+
+					if(inter==0)
+					{
+						P_addVertex(&P, pos);
+				
+						printf("P is -> %d\n",P_isConvex(&P));
+						P._is_convex = P_isConvex(&P);
+						//P_print(&P,"affichage des valeurs");
 					}
 				}
-
-				if(inter==0)
+				else
 				{
-					P_addVertex(&P, pos);
-			
-					printf("P is -> %d\n",P_isConvex(&P));
-					P._is_convex = P_isConvex(&P);
-					//P_print(&P,"affichage des valeurs");
+					printf("Ajout de sommet désactivé, clic du mileu pour le réactiver");
 				}
 			}
 		break;
@@ -247,6 +255,14 @@ void mouse(int button, int state, int x, int y)
 			if(state==GLUT_DOWN)
 			{
 				fprintf(stderr,"Clic milieu\n");
+				if(dessiner==1)
+				{
+					dessiner=0;
+				}
+				else if(dessiner==0)
+				{
+					dessiner=1;
+				}
 			}
 		break;
 
