@@ -57,22 +57,22 @@ void drawline(Polygon *P)
 
 void drawRepere()
 {
-	glColor3d(300,0,0);
+	glColor3d(255,0,0);
 	glBegin(GL_LINES);
 	glVertex3d(0,0,0);
-	glVertex3d(300,0,0);
+	glVertex3d(1,0,0);
 	glEnd();
 
-	glColor3d(0,300,0);
+	glColor3d(0,255,0);
 	glBegin(GL_LINES);
 	glVertex3d(0,0,0);
-	glVertex3d(0,300,0);
+	glVertex3d(0,1,0);
 	glEnd();
 
-	glColor3d(0,0,300);
+	glColor3d(0,0,255);
 	glBegin(GL_LINES);
 	glVertex3d(0,0,0);
-	glVertex3d(0,0,300);
+	glVertex3d(0,0,1);
 	glEnd();
 }
 
@@ -111,11 +111,13 @@ void display()
 
 	if(dim==DIM2)
 	{
-		glOrtho(-300,300,-300,300,-1,1);
+		//glOrtho(-300,300,-300,300,-1,1);
+		glOrtho(-1,1,-1,1,0,0);
 	}
 	else if(dim==DIM3)
 	{
-		glOrtho(-300,300,-300,300,-300,300);
+		//glOrtho(-300,300,-300,300,-300,300);
+		glOrtho(-1,1,-1,1,-1,1);
 	}
 	else
 	{
@@ -214,12 +216,30 @@ void mouse(int button, int state, int x, int y)
 			if(state==GLUT_DOWN)
 			{
 				fprintf(stderr,"Clic gauche\n");
-				Vector pos = V_new(x - width/2,height/2 - y,0);
-				P_addVertex(&P, pos);
-				
-				printf("P is -> %d\n",P_isConvex(&P));
-				P._is_convex = P_isConvex(&P);
-				//P_print(&P,"affichage des valeurs");
+				//Vector pos = V_new(x - width/2,height/2 - y,0);
+				Vector pos=V_new((double)(x-width/2)/(double)(width/2),(double)(-y+height/2)/(double)(height/2),0);
+				int i;
+
+				int inter = 0;
+				for(i=0;i<P._nb_vertices-1;i++)
+				{
+					printf("intersect %d\n", V_segmentsIntersect(P._vertices[i], P._vertices[i+1],P._vertices[P._nb_vertices-1] , pos )+V_segmentsIntersect(P._vertices[i+1], P._vertices[i],P._vertices[P._nb_vertices-1] , pos ));
+					if(V_segmentsIntersect(P._vertices[i], P._vertices[i+1],P._vertices[P._nb_vertices-1] , pos)+V_segmentsIntersect(P._vertices[i+1], P._vertices[i],P._vertices[P._nb_vertices-1] , pos)>1)
+					{
+						fprintf(stderr,"Erreur, segment qui se croisent !\n");
+						inter=1;
+						break;
+					}
+				}
+
+				if(inter==0)
+				{
+					P_addVertex(&P, pos);
+			
+					printf("P is -> %d\n",P_isConvex(&P));
+					P._is_convex = P_isConvex(&P);
+					//P_print(&P,"affichage des valeurs");
+				}
 			}
 		break;
 
@@ -235,6 +255,7 @@ void mouse(int button, int state, int x, int y)
 			{
 				fprintf(stderr,"Clic droit.\n");
 				P_removeLastVertex(&P);
+				P._is_convex = P_isConvex(&P);
 				//P_print(&P,"affichage des valeurs après ");
 			}
 		break;

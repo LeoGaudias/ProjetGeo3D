@@ -37,7 +37,7 @@ Vector V_cross(Vector v1, Vector v2)
 	//  (v1.z * v2.x) - (v1.x * v2.z),
 	//  (v1.x * v2.y) - (v1.y * v2.x));
 
-	Vector v=V_new(0.,0.,0.);
+	Vector v;
 	v.x = v1.y*v2.z - v1.z*v2.y;
 	v.y = v1.x*v2.z - v1.z*v2.x;
 	v.z = v1.x*v2.y - v1.y*v2.x;
