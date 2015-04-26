@@ -129,6 +129,14 @@ void display()
 	// ...
 
 	//chooseRandomColor();
+	if(P._is_convex)
+	{
+		glColor3d(255,0,0);
+	}
+	else
+	{
+		glColor3d(0,0,255);
+	}
 	if(P._is_filled)
 	{
 		if(P._nb_vertices < 3)
@@ -210,7 +218,7 @@ void mouse(int button, int state, int x, int y)
 				P_addVertex(&P, pos);
 				
 				printf("P is -> %d\n",P_isConvex(&P));
-				p._is_convex = P_isConvex(&P);
+				P._is_convex = P_isConvex(&P);
 				//P_print(&P,"affichage des valeurs");
 			}
 		break;
