@@ -37,7 +37,9 @@ Vector V_projectOnPlane(Vector v, Vector normal);
 
 double V_decompose(Vector p, Vector u); 
 Vector V_recompose(double x, double y, double z, Vector u, Vector v, Vector w); 
-void V_uxUyFromUz(Vector u_z, Vector *u_x, Vector *u_y); 
+void V_uxUyFromUz(Vector u_z, Vector *u_x, Vector *u_y);
+
+Vector V_rotate(Vector p, Vector centre, Vector v1, Vector v2);
 
 
 #endif // __VECTOR_H__
