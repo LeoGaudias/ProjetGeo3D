@@ -80,7 +80,7 @@ int P_isConvex(Polygon *P)
 			test += V_isOnTheRight(P->_vertices[i+2],P->_vertices[i],P->_vertices[i+1]);
 		}
 		printf("test = %d\n",test);
-		if(test == P->_nb_vertices-2)
+		if(test == P->_nb_vertices - 2 || test == 0)
 		{
 			return 1;
 		}

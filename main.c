@@ -208,8 +208,9 @@ void mouse(int button, int state, int x, int y)
 				fprintf(stderr,"Clic gauche\n");
 				Vector pos = V_new(x - width/2,height/2 - y,0);
 				P_addVertex(&P, pos);
-				printf("P _nb_vertices -> %d\n",P._nb_vertices);
+				
 				printf("P is -> %d\n",P_isConvex(&P));
+				p._is_convex = P_isConvex(&P);
 				//P_print(&P,"affichage des valeurs");
 			}
 		break;

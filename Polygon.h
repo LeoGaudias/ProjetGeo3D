@@ -27,7 +27,7 @@ typedef struct
 	int _is_convex;
 } Polygon;
 
-Polygon* P_new();
+void P_init(Polygon *p);
 
 void P_copy(Polygon *original, Polygon *copy);
 
@@ -47,8 +47,6 @@ Vector P_center(Polygon *P);
 Vector P_normal(Polygon *P); 
 void P_scale(Polygon *P, double factor); 
 void P_translate(Polygon *P, Vector trans);
-void P_rotate(Polygon *P, Vector normal); 
-
-
+void P_rotate(Polygon *P, Vector normal);
 
 #endif // _POLYGON_H_
