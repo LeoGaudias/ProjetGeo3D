@@ -216,11 +216,11 @@ void mouse(int button, int state, int x, int y)
 	    case GLUT_LEFT_BUTTON :
 			if(state==GLUT_DOWN)
 			{
+				Vector pos=V_new((double)(x-width/2)/(double)(width/2),(double)(-y+height/2)/(double)(height/2),0);
 				if(dessiner==1)
 				{
 					fprintf(stderr,"Clic gauche\n");
 					//Vector pos = V_new(x - width/2,height/2 - y,0);
-					Vector pos=V_new((double)(x-width/2)/(double)(width/2),(double)(-y+height/2)/(double)(height/2),0);
 					int i;
 
 					int inter = 0;
@@ -246,6 +246,7 @@ void mouse(int button, int state, int x, int y)
 				}
 				else
 				{
+					printf("P_isInside -> %d\n",P_isInside(&P, pos));
 					printf("Ajout de sommet désactivé, clic du mileu pour le réactiver");
 				}
 			}
