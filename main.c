@@ -221,6 +221,10 @@ void mouse(int button, int state, int x, int y)
 				{
 					fprintf(stderr,"Clic gauche\n");
 					//Vector pos = V_new(x - width/2,height/2 - y,0);
+<<<<<<< Updated upstream
+=======
+					
+>>>>>>> Stashed changes
 					int i;
 
 					int inter = 0;
@@ -246,8 +250,8 @@ void mouse(int button, int state, int x, int y)
 				}
 				else
 				{
-					printf("P_isInside -> %d\n",P_isInside(&P, pos));
-					printf("Ajout de sommet désactivé, clic du mileu pour le réactiver");
+					printf("Ajout de sommet désactivé, clic du mileu pour le réactiver, ");
+					printf("inside : %d\n",P_isInside(&P,pos));
 				}
 			}
 		break;
@@ -259,6 +263,7 @@ void mouse(int button, int state, int x, int y)
 				if(dessiner==1)
 				{
 					dessiner=0;
+					printf("Dessin terminé, clique du milieu pour continuer\n");
 				}
 				else if(dessiner==0)
 				{
