@@ -110,7 +110,16 @@ int P_nbEdgesIntersectedByRay(Polygon *P, Vector M, Vector u_ray)
 
 int P_isInside(Polygon *P, Vector M)
 {
-	//TODO
+	
+	int i, test = 0;
+	for (i = 0; i < P->_nb_vertices - 1; ++i)
+	{
+		test += V_isOnTheRight(M,P->_vertices[i],P->_vertices[i+1]);
+	}
+	if(test == P->_nb_vertices - 1 || test == 0)
+	{
+		return 1;
+	}
 	return 0;
 }
 
