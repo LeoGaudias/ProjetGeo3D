@@ -6,7 +6,7 @@ void P_init(Polygon *p)
 	p->_nb_vertices = 0;
 	p->_is_closed = 0;
 	// 1 --> true
-	p->_is_filled = 1;
+	p->_is_filled = 0;
 	p->_is_convex = 0;
 }
 
