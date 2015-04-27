@@ -19,6 +19,11 @@
 #define DIM2 0
 #define DIM3 1
 
+#define WIREFRAME 0
+#define FLAT      1
+#define SHADE     2
+int draw = WIREFRAME;
+
 int dim = DIM2;
 
 /* dimensions de la fenetre */
@@ -28,6 +33,7 @@ int height = 650;
 /*var globale*/
 Vector p_aim;
 Polygon P;
+Mesh m;
 //Mesh ou QuadMesh M
 int dessiner=1; // on peut dessiner
 
@@ -58,19 +64,19 @@ void drawline(Polygon *P)
 
 void drawRepere()
 {
-	glColor3d(255,0,0);
+	glColor3d(1,0,0);
 	glBegin(GL_LINES);
 	glVertex3d(0,0,0);
 	glVertex3d(1,0,0);
 	glEnd();
 
-	glColor3d(0,255,0);
+	glColor3d(0,1,0);
 	glBegin(GL_LINES);
 	glVertex3d(0,0,0);
 	glVertex3d(0,1,0);
 	glEnd();
 
-	glColor3d(0,0,255);
+	glColor3d(0,0,1);
 	glBegin(GL_LINES);
 	glVertex3d(0,0,0);
 	glVertex3d(0,0,1);
@@ -112,12 +118,6 @@ void display()
 
 	if(dim==DIM2)
 	{
-		//glOrtho(-300,300,-300,300,-1,1);
-		glOrtho(-1,1,-1,1,0,0);
-	}
-	else if(dim==DIM3)
-	{
-		//glOrtho(-300,300,-300,300,-300,300);
 		glOrtho(-1,1,-1,1,-1,1);
 	}
 	else
@@ -180,6 +180,43 @@ void keyboard(unsigned char keycode, int x, int y)
 		else
 		{
 			P._is_filled = 1;
+		}
+	}
+	else if(keycode=='r' || keycode=='R')
+	{
+		M_revolution(&m,&P,12);
+		if(dim == DIM2)
+		{
+			dim=DIM3;
+		}
+		else
+		{
+			dim=DIM2;
+		}
+	}
+	else if(keycode=='a' || keycode=='A')
+	{
+		switch(draw)
+		{
+			case WIREFRAME :
+				draw = FLAT;
+				P._is_filled = 0;
+				glDisable(GL_LIGHTING);
+				glEnable(GL_DEPTH_TEST);
+				break;
+
+			case FLAT :
+				draw = SHADE;
+				P._is_filled = 1;
+				initShade();
+				break;
+
+			case SHADE :
+				draw = WIREFRAME;
+				P._is_filled = 1;
+				glDisable(GL_LIGHTING);
+				glDisable(GL_DEPTH_TEST);
+				break;
 		}
 	}
 
@@ -321,6 +358,11 @@ int main(int argc, char *argv[])
 	p_aim = V_new(0,0,-2.75);
 	//P = P_new();
 	P_init(&P);
+	// P_addVertex(&P,V_new(-0.8,-0.8,0));
+	// P_addVertex(&P,V_new(-0.8,0.8,0));
+	// P_addVertex(&P,V_new(0.8,0.8,0));
+	// P_addVertex(&P,V_new(0.8,-0.8,0));
+	// M_init(&m);
 	//M = NULL;
 
 	glutMainLoop();

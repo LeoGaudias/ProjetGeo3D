@@ -19,6 +19,12 @@ Mesh* M_new()
 	return m;
 }
 
+void M_init(Mesh *m)
+{
+	m->_nb_quads = 0;
+	m->_is_filled = 0;
+}
+
 void M_print(Mesh *P, char *message)
 {
 	int i;

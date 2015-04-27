@@ -38,6 +38,7 @@ typedef struct
 } Mesh;
 
 Mesh* M_new();
+void M_init(Mesh *m);
 void M_print(Mesh *P, char *message);
 
 void M_addQuad(Mesh *P, Quad q);
