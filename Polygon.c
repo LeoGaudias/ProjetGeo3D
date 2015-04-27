@@ -19,7 +19,7 @@ void P_copy(Polygon *original, Polygon *copy)
 	int i;
 	for(i = 0; i < P_MAX_VERTICES; ++i)
 	{
-	copy->_vertices[i] = original->_vertices[i];
+		copy->_vertices[i] = original->_vertices[i];
 	}
 }
 

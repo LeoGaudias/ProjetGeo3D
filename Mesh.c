@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "math.h"
 
 Quad Q_new(Vector v1, Vector v2, Vector v3, Vector v4)
 {
@@ -47,11 +48,38 @@ void M_addQuad(Mesh *P, Quad q)
 
 void M_addSlice(Mesh *P, Polygon *p1, Polygon *p2)
 {
+	if(p1->_nb_vertices!=p2->_nb_vertices)
+	{
+		fprintf(stderr,"le nombre de vertices est différent !\n");
+	}
+	else
+	{
+		int i=0;
+		for(i=0;i<p1->_nb_vertices-1;i++)
+		{
+			Quad q=Q_new(p1->_vertices[i],p1->_vertices[i+1],p2->_vertices[i+1],p2->_vertices[i]);
+			M_addQuad(P,q);
+		}
 
+		// dernière face à ajouter
+		Quad q=Q_new(p1->_vertices[p1->_nb_vertices-1],p1->_vertices[0],p2->_vertices[0],p2->_vertices[p2->_nb_vertices-1]);
+		M_addQuad(P,q);
+	}
 }
 void M_revolution(Mesh *P, Polygon *p1, int nb_slices)
 {
+	int i=0;
+	Polygon av,act;
+	P_copy(p1,&av);
+	P_copy(p1,&act);
 
+	float angle=(float)(2)*M_PI/nb_slices;
+	for(i=0;i<nb_slices;i++)
+	{
+		P_turnAroundY(&act,angle);
+		M_addSlice(P,&av,&act);
+		P_copy(&act,&av);
+	}
 }
 void M_perlinExtrude(Mesh *QM, Polygon *p, int nb_slices)
 {
