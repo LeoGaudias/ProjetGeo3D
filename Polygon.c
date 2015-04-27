@@ -116,10 +116,24 @@ int P_isInside(Polygon *P, Vector M)
 	{
 		test += V_isOnTheRight(M,P->_vertices[i],P->_vertices[i+1]);
 	}
-	if(test == P->_nb_vertices - 1 || test == 0)
+
+	if(P->_nb_vertices>=3)
 	{
-		return 1;
+		if(test == P->_nb_vertices - 1 && V_isOnTheRight(P->_vertices[2],P->_vertices[0],P->_vertices[1])==1)
+		{
+			return 1;
+		}
+		else if(test==0 && V_isOnTheRight(P->_vertices[2],P->_vertices[0],P->_vertices[1])==0)
+		{
+			return 1;
+		}
 	}
+	else
+	{
+		fprintf(stderr, "Nombre de vertices doit être supérieur ou égal à 3\n");
+		return -1;
+	}
+	
 	return 0;
 }
 

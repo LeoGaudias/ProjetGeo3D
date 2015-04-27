@@ -106,15 +106,13 @@ int V_segmentsIntersect(Vector p1, Vector p2, Vector q1, Vector q2)
 {
 	int res=0;
 	
-	if(V_isOnTheRight(q1,p1,p2)==0 && V_isOnTheRight(q2,p1,p2)==1)
+	if(V_isOnTheRight(q1,p1,p2)+V_isOnTheRight(q2,p1,p2)==1)
 	{
-		res=1;
+		if(V_isOnTheRight(p1,q1,q2)+V_isOnTheRight(p2,q1,q2)==1)
+		{
+			res=1;
+		}
 	}
-	else if(V_isOnTheRight(q1,p1,p2)==1 && V_isOnTheRight(q2,p1,p2)==0)
-	{
-		res=1;
-	}
-	
 	
 	return res;
 }
