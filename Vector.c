@@ -161,23 +161,43 @@ Vector V_projectOnPlane(Vector v, Vector normal)
 
 double V_decompose(Vector p, Vector u)
 {
-	//TODO
-	return 0.0;
+	return V_dot(p,u)*V_length(u);
 }
 
 Vector V_recompose(double x, double y, double z, Vector u, Vector v, Vector w)
 {
-	//TODO
-	return V_new(0,0,0);
+	Vector vec=V_add(V_multiply(y,v),V_multiply(z,w));
+	return V_add(V_multiply(x,u),vec);
 }
 
 void V_uxUyFromUz(Vector u_z, Vector *u_x, Vector *u_y)
 {
-	//TODO
+	if(u_z.x==u_z.z && u_z.x==0)
+	{
+		*u_x=V_new(0,0,u_z.y);
+		*u_y=V_new(u_z.y,0,0);
+	}
+	else
+	{
+		*u_x=V_multiply(V_length(u_z),V_unit(V_cross(V_new(0,1,0),u_z)));
+		*u_y=V_multiply(V_length(u_z),V_unit(V_cross(*u_x,u_z)));
+	}
 }
 
 Vector V_rotate(Vector p, Vector centre, Vector v1, Vector v2)
 {
-	//TODO
-	return V_new(0,0,0);
+	// pas sûr de l'utilité des vecteurs unitaires ...
+	Vector u1=V_unit(v1);
+	Vector u2=V_unit(v2);
+
+	Vector r1x,r1y, r2x, r2y;
+	V_uxUyFromUz(u1,&r1x,&r1y);
+	V_uxUyFromUz(u2,&r2x,&r2y);
+
+	double x=V_decompose(p,r1x);
+	double y=V_decompose(p,r1y);
+	double z=V_decompose(p,u1);
+
+	Vector recomp=V_recompose(x,y,z,r2x,r2y,u2);
+	return V_add(centre,recomp);
 }

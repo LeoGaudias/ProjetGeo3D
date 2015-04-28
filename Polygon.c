@@ -148,8 +148,16 @@ void P_turnAroundY(Polygon *P, double radians)
 
 Vector P_center(Polygon *P)
 {
-	//TODO
-	return V_new(0,0,0);
+	int i=0;
+	Vector centre=V_new(0,0,0);
+
+	for(i=0;i<P->_nb_vertices;i++)
+	{
+		centre=V_add(centre,P->_vertices[i]);
+	}
+	centre=V_multiply((double)(1)/P->_nb_vertices,centre);
+
+	return centre;
 }
 
 Vector P_normal(Polygon *P)
