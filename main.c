@@ -25,6 +25,7 @@
 int draw = WIREFRAME;
 
 int dim = DIM2;
+int rev=0;
 
 /* dimensions de la fenetre */
 int width = 650;
@@ -189,8 +190,7 @@ void keyboard(unsigned char keycode, int x, int y)
 		}
 	}
 	else if(keycode=='r' || keycode=='R')
-	{
-		M_revolution(&m,&P,12);
+	{	
 		if(dim == DIM2)
 		{
 			dim=DIM3;
@@ -198,6 +198,12 @@ void keyboard(unsigned char keycode, int x, int y)
 		else
 		{
 			dim=DIM2;
+		}
+
+		if(rev==0)
+		{
+			M_revolution(&m,&P,12);
+			rev=1;
 		}
 	}
 	else if(keycode=='a' || keycode=='A')
@@ -366,6 +372,7 @@ int main(int argc, char *argv[])
 	p_aim = V_new(0,0,-2.75);
 	//P = P_new();
 	P_init(&P);
+	M_init(&m);
 	/*Vector p000 = V_new(-0.5,-0.5,-0.5);
 	Vector p001 = V_new(-0.5,-0.5, 0.5);
 	Vector p010 = V_new(-0.5, 0.5,-0.5);

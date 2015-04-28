@@ -48,7 +48,7 @@ void M_addQuad(Mesh *P, Quad q)
 	}
 	else
 	{
-		fprintf(stderr,"Tableau plein !\n");
+		fprintf(stderr,"Tableau plein mesh !\n");
 	}
 }
 
@@ -86,6 +86,7 @@ void M_revolution(Mesh *P, Polygon *p1, int nb_slices)
 		M_addSlice(P,&av,&act);
 		P_copy(&act,&av);
 	}
+	printf("Nombre de vertices : %d\n", P->_nb_quads);
 }
 void M_perlinExtrude(Mesh *QM, Polygon *p, int nb_slices)
 {
