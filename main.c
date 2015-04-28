@@ -163,6 +163,12 @@ void display()
 		drawline(&P);
 	}
 
+	if(rev==1)
+	{
+		glColor3d(0,255,255);
+		M_draw(&m);
+	}
+
 	// Repere du monde
 
 	drawRepere();
@@ -194,16 +200,17 @@ void keyboard(unsigned char keycode, int x, int y)
 		if(dim == DIM2)
 		{
 			dim=DIM3;
+			M_init(&m);
 		}
 		else
 		{
 			dim=DIM2;
 		}
 
-		if(rev==0)
+		if(rev==0 && dim==DIM3)
 		{
 			//M_revolution(&m,&P,12);
-			M_perlinExtrude(&m,&P,128);
+			M_perlinExtrude(&m,&P,12);
 			rev=1;
 		}
 	}
