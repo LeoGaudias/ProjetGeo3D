@@ -90,7 +90,20 @@ void M_revolution(Mesh *P, Polygon *p1, int nb_slices)
 }
 void M_perlinExtrude(Mesh *QM, Polygon *p, int nb_slices)
 {
+	int i=0;
+	Vector bruit;
+	Polygon poly_cour,poly_suiv;
+	P_copy(p,&poly_cour);
+	P_copy(p,&poly_suiv);
 
+	for(i=0;i<nb_slices;i++)
+	{
+		bruit=PRLN_vectorNoise(P_center(&poly_cour));
+		P_copy(&poly_cour,&poly_suiv);
+		P_translate(&poly_cour,bruit);
+		P_rotate(&poly_cour,bruit);
+		M_addSlice(QM,&poly_suiv,&poly_cour);
+	}
 }
 
 void M_draw(Mesh *P)

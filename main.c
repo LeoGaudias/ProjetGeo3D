@@ -202,7 +202,8 @@ void keyboard(unsigned char keycode, int x, int y)
 
 		if(rev==0)
 		{
-			M_revolution(&m,&P,12);
+			//M_revolution(&m,&P,12);
+			M_perlinExtrude(&m,&P,128);
 			rev=1;
 		}
 	}
@@ -260,7 +261,7 @@ void special(int keycode, int x, int y)
 
 void mouse(int button, int state, int x, int y)
 {
-	printf("Clic at %d %d \n",x,y);
+	//printf("Clic at %d %d \n",x,y);
 
 	switch(button)
     {

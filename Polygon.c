@@ -162,8 +162,9 @@ Vector P_center(Polygon *P)
 
 Vector P_normal(Polygon *P)
 {
-	//TODO
-	return V_new(0,0,0);
+	Vector v1=V_substract(P->_vertices[1], P->_vertices[0]);
+	Vector v2=V_substract(P->_vertices[2], P->_vertices[0]);
+	return V_unit(V_cross(v1,v2));
 }
 
 void P_scale(Polygon *P, double factor)
@@ -173,10 +174,23 @@ void P_scale(Polygon *P, double factor)
 
 void P_translate(Polygon *P, Vector trans)
 {
-	//TODO
+	int i=0;
+	for(i=0;i<P->_nb_vertices;i++)
+	{
+		P->_vertices[i]=V_add(P->_vertices[i],trans);
+	}
 }
 
 void P_rotate(Polygon *P, Vector normal)
 {
-	//TODO
+	Vector centre=P_center(P);
+
+	Vector normal_act=V_add(centre,P_normal(P));
+	Vector normal_voulu=V_add(centre,V_unit(normal));
+
+	int i=0;
+	for(i=0;i<P->_nb_vertices;i++)
+	{
+		P->_vertices[i]=V_rotate(P->_vertices[i],centre,normal_act,normal_voulu);
+	}
 }
