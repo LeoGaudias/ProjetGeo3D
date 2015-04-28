@@ -32,6 +32,8 @@ int height = 650;
 
 /*var globale*/
 Vector p_aim;
+float phi = -20;
+float theta = 20;
 Polygon P;
 Mesh m;
 //Mesh ou QuadMesh M
@@ -123,10 +125,14 @@ void display()
 	else
 	{
 		gluPerspective( 40, (float)width/height, 1, 100);
+		glTranslatef(p_aim.x,p_aim.y,p_aim.z);
+		glRotatef(theta,1,0,0);
+		glRotatef(phi,0,1,0);
 	}
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
 
 	// Dessiner ici
 	// ...
@@ -230,16 +236,18 @@ void special(int keycode, int x, int y)
 	int mod = glutGetModifiers();
 	switch(keycode)
     {
-    case GLUT_KEY_UP        : printf("Flèche haut\n"); break;
-    case GLUT_KEY_DOWN      : printf("Flèche bas\n"); break;
-    case GLUT_KEY_LEFT      : printf("Flèche gauche\n"); break;
-    case GLUT_KEY_RIGHT     : printf("Flèche droite\n"); break;
-    case GLUT_KEY_PAGE_UP   : printf("Flèche avant\n"); break;
-    case GLUT_KEY_PAGE_DOWN : printf("Flèche arriere\n"); break;
+    case GLUT_KEY_UP        : if(mod==GLUT_ACTIVE_CTRL) p_light[1]+=1; else if(mod==GLUT_ACTIVE_SHIFT) p_aim.y+=.1; else theta-= 10; break;
+    case GLUT_KEY_DOWN      : if(mod==GLUT_ACTIVE_CTRL) p_light[1]-=1; else if(mod==GLUT_ACTIVE_SHIFT) p_aim.y-=.1; else theta+= 10; break;
+    case GLUT_KEY_LEFT      : if(mod==GLUT_ACTIVE_CTRL) p_light[0]-=1; else if(mod==GLUT_ACTIVE_SHIFT) p_aim.x-=.1; else phi-= 10; break;
+    case GLUT_KEY_RIGHT     : if(mod==GLUT_ACTIVE_CTRL) p_light[0]+=1; else if(mod==GLUT_ACTIVE_SHIFT) p_aim.x+=.1; else phi+= 10; break;
+    case GLUT_KEY_PAGE_UP   : if(mod==GLUT_ACTIVE_CTRL) p_light[2]-=1; else p_aim.z-=1; break;
+    case GLUT_KEY_PAGE_DOWN : if(mod==GLUT_ACTIVE_CTRL) p_light[2]+=1; else p_aim.z+=1; break;
     default : fprintf(stderr,"function special : unknown keycode %d\n",keycode); break;
     }
 	if(mod==GLUT_ACTIVE_CTRL)
 		glLightfv(GL_LIGHT0, GL_POSITION, p_light);
+
+	glutPostRedisplay();
 }
 
 //------------------------------------------------------------
@@ -358,6 +366,22 @@ int main(int argc, char *argv[])
 	p_aim = V_new(0,0,-2.75);
 	//P = P_new();
 	P_init(&P);
+	/*Vector p000 = V_new(-0.5,-0.5,-0.5);
+	Vector p001 = V_new(-0.5,-0.5, 0.5);
+	Vector p010 = V_new(-0.5, 0.5,-0.5);
+	Vector p011 = V_new(-0.5, 0.5, 0.5);
+	Vector p100 = V_new( 0.5,-0.5,-0.5);
+	Vector p101 = V_new( 0.5,-0.5, 0.5);
+	Vector p110 = V_new( 0.5, 0.5,-0.5);
+	Vector p111 = V_new( 0.5, 0.5, 0.5);
+
+	m._nb_quads = 6;
+	m._quads[0] = Q_new(p010,p011,p111,p110);  // top
+	m._quads[1] = Q_new(p000,p100,p101,p001);  // bottom
+	m._quads[2] = Q_new(p110,p111,p101,p100);  // right
+	m._quads[3] = Q_new(p000,p001,p011,p010);  // left
+	m._quads[4] = Q_new(p111,p011,p001,p101);  // front
+	m._quads[5] = Q_new(p000,p010,p110,p100);  // back*/
 	// P_addVertex(&P,V_new(-0.8,-0.8,0));
 	// P_addVertex(&P,V_new(-0.8,0.8,0));
 	// P_addVertex(&P,V_new(0.8,0.8,0));
