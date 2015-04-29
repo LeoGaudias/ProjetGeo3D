@@ -155,7 +155,7 @@ void display()
 		}
 		else
 		{
-			P_draw(&P,width,height);
+			P_draw(&P);
 		}
 	}
 	else
@@ -165,7 +165,7 @@ void display()
 
 	if(rev==1)
 	{
-		glColor3d(0,255,255);
+		glColor3d(255,255,255);
 		M_draw(&m);
 	}
 
@@ -210,7 +210,7 @@ void keyboard(unsigned char keycode, int x, int y)
 		if(rev==0 && dim==DIM3)
 		{
 			//M_revolution(&m,&P,12);
-			M_perlinExtrude(&m,&P,12);
+			M_perlinExtrude(&m,&P,128);
 			rev=1;
 		}
 	}

@@ -35,7 +35,7 @@ void P_addVertex(Polygon *P, Vector p);
 void P_removeLastVertex(Polygon *P);
 
 void P_print(Polygon *P, char *message); 
-void P_draw(Polygon *P, int width, int height);
+void P_draw(Polygon *P);
 
 int P_isConvex(Polygon *P);
 int P_isOnTheLeftOfAllEdges(Polygon *P, Vector M);

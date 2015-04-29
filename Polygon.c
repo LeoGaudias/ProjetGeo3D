@@ -6,7 +6,7 @@ void P_init(Polygon *p)
 	p->_nb_vertices = 0;
 	p->_is_closed = 0;
 	// 1 --> true
-	p->_is_filled = 0;
+	p->_is_filled = 1;
 	p->_is_convex = 0;
 }
 
@@ -58,7 +58,7 @@ void P_print(Polygon *P, char *message)
 	}
 }
 
-void P_draw(Polygon *P, int width, int height)
+void P_draw(Polygon *P)
 {
 	int i;
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -104,21 +104,8 @@ int P_isOnTheLeftOfAllEdges(Polygon *P, Vector M)
 
 int P_nbEdgesIntersectedByRay(Polygon *P, Vector M, Vector u_ray)
 {
-	int cpt = 0;
-	int i;
-
-	for (i = 0; i < P->_nb_vertices - 1; i++)
-	{
-		if (V_rayIntersectsSegment(M, u_ray, P->_vertices[i], P->_vertices[i + 1]))
-		{
-			cpt++;
-		}
-		if (i == P->_nb_vertices-1)
-		{
-			cpt+=V_rayIntersectsSegment(M,u_ray, P->_vertices[i], P->_vertices[0]);
-		}
-	}
-	return cpt;
+	//TODO
+	return 0;
 }
 
 int P_isInside(Polygon *P, Vector M)
@@ -150,12 +137,10 @@ int P_isInside(Polygon *P, Vector M)
 	return 0;
 }
 
-void P_turnAroundY(Polygon *P, double radians)
-{
-	int i=0;
-	for(i=0;i<P->_nb_vertices;i++)
-	{
-		V_turnAroundY(P->_vertices[i],radians);
+void P_turnAroundY(Polygon *P, double radians){
+	int i;
+	for (i=0; i < P->_nb_vertices; i++){
+		V_turnAroundY(P->_vertices[i], radians);
 	}
 }
 
@@ -204,6 +189,6 @@ void P_rotate(Polygon *P, Vector normal)
 	int i=0;
 	for(i=0;i<P->_nb_vertices;i++)
 	{
-		P->_vertices[i]=V_rotate(P->_vertices[i],centre,normal_act,normal_voulu);
+		V_rotate(P->_vertices[i],centre,normal_act,normal_voulu);
 	}
 }
