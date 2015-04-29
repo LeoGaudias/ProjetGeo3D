@@ -108,15 +108,16 @@ void M_perlinExtrude(Mesh *QM, Polygon *p, int nb_slices)
 
 void M_draw(Mesh *P)
 {
-	int i;
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glBegin(GL_POLYGON);
-	for(i = 0; i < P->_nb_quads; ++i)
+	int i=0;
+	for (i=0; i<P->_nb_quads; i++)
 	{
-		glVertex3f(P->_quads[i]._vertices[0].x, P->_quads[i]._vertices[0].y, P->_quads[i]._vertices[0].z);
-		glVertex3f(P->_quads[i]._vertices[1].x, P->_quads[i]._vertices[1].y, P->_quads[i]._vertices[1].z);
-		glVertex3f(P->_quads[i]._vertices[2].x, P->_quads[i]._vertices[2].y, P->_quads[i]._vertices[2].z);
-		glVertex3f(P->_quads[i]._vertices[3].x, P->_quads[i]._vertices[3].y, P->_quads[i]._vertices[3].z);
+		glBegin(GL_QUADS);
+		int j;
+		for (j=0; j<4; j++)
+		{
+			Vector v = P->_quads[i]._vertices[j];
+			glVertex3f(v.x, v.y, v.z);
+		}
+		glEnd();
 	}
-	glEnd();
 }

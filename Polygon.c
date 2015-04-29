@@ -104,8 +104,21 @@ int P_isOnTheLeftOfAllEdges(Polygon *P, Vector M)
 
 int P_nbEdgesIntersectedByRay(Polygon *P, Vector M, Vector u_ray)
 {
-	//TODO
-	return 0;
+	int cpt = 0;
+	int i;
+
+	for (i = 0; i < P->_nb_vertices - 1; i++)
+	{
+		if (V_rayIntersectsSegment(M, u_ray, P->_vertices[i], P->_vertices[i + 1]))
+		{
+			cpt++;
+		}
+		if (i == P->_nb_vertices-1)
+		{
+			cpt+=V_rayIntersectsSegment(M,u_ray, P->_vertices[i], P->_vertices[0]);
+		}
+	}
+	return cpt;
 }
 
 int P_isInside(Polygon *P, Vector M)
@@ -155,7 +168,7 @@ Vector P_center(Polygon *P)
 	{
 		centre=V_add(centre,P->_vertices[i]);
 	}
-	centre=V_multiply((double)(1)/P->_nb_vertices,centre);
+	centre=V_multiply((double)1.0/P->_nb_vertices,centre);
 
 	return centre;
 }

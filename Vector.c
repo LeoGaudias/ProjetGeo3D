@@ -51,12 +51,12 @@ float  V_dot(Vector v1, Vector v2)
 
 float  V_length(Vector v)
 {
-	return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	return sqrt(v.x*v.x+v.y*v.y+v.z*v.z);
 }
 
 Vector V_unit(Vector v)
 {
-	int lon=V_length(v);
+	float lon=V_length(v);
 	return V_new(v.x/lon,v.y/lon,v.z/lon);
 }
 
